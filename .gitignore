@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### RSA Keys ###
-!**/src/main/resources/rsa/
+/src/main/resources/rsa/
