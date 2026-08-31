@@ -1,4 +1,3 @@
--- Para PostgreSQL
 CREATE TABLE tb_roles (
                           role_id BIGSERIAL PRIMARY KEY,
                           name VARCHAR(50) NOT NULL UNIQUE
@@ -7,7 +6,10 @@ CREATE TABLE tb_roles (
 CREATE TABLE tb_users (
                           user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                           username VARCHAR(255) NOT NULL UNIQUE,
-                          password VARCHAR(255) NOT NULL
+                          email VARCHAR(255) NOT NULL UNIQUE,
+                          password VARCHAR(255) NOT NULL,
+                          created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tb_users_roles (
