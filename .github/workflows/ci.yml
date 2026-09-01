@@ -35,6 +35,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -51,3 +53,13 @@ jobs:
 
       - name: Build and test
         run: ./mvnw --batch-mode verify
+
+      - name: SonarQube Cloud analysis
+        continue-on-error: true # TODO remover após configuração inicial do projeto
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >-
+          ./mvnw --batch-mode
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.qualitygate.wait=true
