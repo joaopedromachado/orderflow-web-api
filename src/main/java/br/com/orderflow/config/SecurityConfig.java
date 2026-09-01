@@ -7,6 +7,8 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.security.converter.RsaKeyConverters;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,6 +23,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
@@ -30,10 +34,10 @@ import java.security.interfaces.RSAPublicKey;
 public class SecurityConfig {
 
     @Value("${jwt.private.key}")
-    private RSAPrivateKey privateKey;
+    private Resource privateKeyResource;
 
     @Value("${jwt.public.key}")
-    private RSAPublicKey publicKey;
+    private Resource publicKeyResource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
@@ -52,13 +56,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(this.publicKey).build();
+    public RSAPrivateKey privateKey() throws IOException {
+        try (InputStream inputStream = this.privateKeyResource.getInputStream()) {
+            return RsaKeyConverters.pkcs8().convert(inputStream);
+        }
     }
 
     @Bean
-    public JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(this.privateKey).build();
+    public RSAPublicKey publicKey() throws IOException {
+        try (InputStream inputStream = this.publicKeyResource.getInputStream()) {
+            return RsaKeyConverters.x509().convert(inputStream);
+        }
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(RSAPublicKey publicKey) {
+        return NimbusJwtDecoder.withPublicKey(publicKey).build();
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+        JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
