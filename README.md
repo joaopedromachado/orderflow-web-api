@@ -34,10 +34,11 @@ docker compose up -d
 
 Para organizar o desenvolvimento, estou usando um quadro no Trello para acompanhar as tarefas, simulando um fluxo de trabalho parecido com o de um ambiente profissional. A ideia é manter visibilidade do que já foi feito, do que está em andamento e do que ainda falta implementar. (Não será aplicado métricas sob vigor de métodologias ágeis),
 
-Link do quadro: https://trello.com/b/z0ICU6Zz/orderflow
+Link do quadro: <a href="https://trello.com/b/z0ICU6Zz/orderflow" target="_blank">Orderflow Board</a>
 
 ## Status
 
-Começando do zero. Próximos passos: subir a estrutura inicial do projeto, configurar o banco e as primeiras migrations.
+~~Começando do zero. Próximos passos: subir a estrutura inicial do projeto, configurar o banco e as primeiras migrations.~~<br>
+Criar entidades Order e os respectivos endpoints no padrão REST, configurar RabbitMQ e docker-compose.yml para conectar o sistema de mensageria na mesma network do postgres
 
 just4fun :D
