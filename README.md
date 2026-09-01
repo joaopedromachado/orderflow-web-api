@@ -1,10 +1,8 @@
 # Order Flow API
 
-Projeto de estudo para praticar uma stack Java/Spring mais completa, do backend ao frontend, incluindo mensageria, integração com AWS e autenticação.
+Projeto de estudo para praticar uma stack Java/Spring mais completa, do backend ao frontend, incluindo mensageria, integração com AWS, autenticação com Spring Security utilizando assinatura JWT e OAuth2 Resource e JaCoCo para cobertura de testes e geração de relatórios com SonarQube Cloud para automatizar a análise de qualidade, segurança e padronização de forma contínua.
 
 A ideia é simular um sistema de pedidos onde a criação de um pedido dispara um processamento assíncrono (geração de comprovante e notificação por email), em vez de fazer tudo isso na hora, dentro do mesmo request.
-
-Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
 
 ## Stack planejada
 
@@ -14,6 +12,7 @@ Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
 - AWS S3 e Lambda
 - Resend para envio de email
 - Thymeleaf para geração de relatórios dos pedidos em PDF
+- JaCoCo para cobertura de testes
 - Spring Security com JWT + OAUTH2
 - Swagger para documentação
 - Consumindo API externa ViaCEP
@@ -24,7 +23,7 @@ Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
 
 ## Como rodar
 
-Por enquanto o projeto ainda não tem o `docker-compose.yml` nem os módulos criados. Isso deve ser um dos primeiros passos.
+Precisa ter o docker-cli e docker compose instalados na máquina para executar o comando abaixo. Para sistemas windows é necessário ter o WSL instalado na máquina e lembrar de habilitar a Virtualização da máquina dentro da BIOS.
 
 ```
 docker compose up -d
