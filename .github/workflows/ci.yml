@@ -55,6 +55,7 @@ jobs:
         run: ./mvnw --batch-mode verify
 
       - name: SonarQube Cloud analysis
+        continue-on-error: true # TODO remover após configuração inicial do projeto
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

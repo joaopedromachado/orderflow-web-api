@@ -30,6 +30,15 @@ Por enquanto o projeto ainda não tem o `docker-compose.yml` nem os módulos cri
 docker compose up -d
 ```
 
+## Qualidade e integração contínua
+
+O projeto possui uma pipeline no GitHub Actions executada a cada `push` e `pull request`. Ela configura o ambiente necessário, executa o build e os testes automatizados.
+
+A cobertura dos testes é gerada pelo JaCoCo e enviada para o SonarQube Cloud, onde também são feitas análises de qualidade e segurança do código.
+
+- [GitHub Actions](https://github.com/joaopedromachado/orderflow-web-api/actions)
+- [SonarQube Cloud](https://sonarcloud.io/summary/overall?id=joaopedromachado_orderflow-web-api&branch=main)
+
 ## Quadro do Trello
 
 Para organizar o desenvolvimento, estou usando um quadro no Trello para acompanhar as tarefas, simulando um fluxo de trabalho parecido com o de um ambiente profissional. A ideia é manter visibilidade do que já foi feito, do que está em andamento e do que ainda falta implementar. (Não será aplicado métricas sob vigor de métodologias ágeis),
