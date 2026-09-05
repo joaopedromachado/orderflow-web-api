@@ -1,16 +1,22 @@
-package br.com.orderflow.service;
+package br.com.orderflow.service.user;
 
-import br.com.orderflow.api.controller.dto.request.CreateUserRequest;
-import br.com.orderflow.domain.security.Role;
-import br.com.orderflow.domain.security.User;
-import br.com.orderflow.exception.UserAlreadyExistsException;
+import br.com.orderflow.domain.user.Role;
+import br.com.orderflow.domain.user.User;
+import br.com.orderflow.exception.UsernameOrEmailAlreadyExistsException;
 import br.com.orderflow.exception.UsernameNotFoundException;
-import br.com.orderflow.repository.UserRepository;
+import br.com.orderflow.mapper.user.UserMapper;
+import br.com.orderflow.repository.user.UserRepository;
+import br.com.orderflow.api.controller.v1.auth.dto.request.RegisterUserRequest;
+import br.com.orderflow.api.controller.v1.auth.dto.response.RegisterUserResponse;
+import br.com.orderflow.service.user.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -47,19 +53,19 @@ public class UserService {
         return userExists;
     }
 
-    public void createUser(final CreateUserRequest createUserRequest) {
-        logger.info("Iniciando cadastro de usuário: username={}", createUserRequest.username());
+    public RegisterUserResponse register(final RegisterUserRequest registerUserRequest) {
+        logger.info("Iniciando cadastro de usuário: username={}", registerUserRequest.username());
 
-        final User user = objectMapper.convertValue(createUserRequest, User.class);
+        final User user = objectMapper.convertValue(registerUserRequest, User.class);
         final Role role = this.roleService.getRoleByName(Role.Values.BASIC.name());
 
         user.setRoles(Set.of(role));
 
-        if (this.verifyUsernameOrEmailExists(user.getUsername(), createUserRequest.email())) {
+        if (this.verifyUsernameOrEmailExists(user.getUsername(), user.getEmail())) {
             logger.warn("Cadastro recusado: username={} ou email={} já está em uso",
-                    createUserRequest.username(),
-                    createUserRequest.email());
-            throw new UserAlreadyExistsException("Usuário já existente");
+                    registerUserRequest.username(),
+                    registerUserRequest.email());
+            throw new UsernameOrEmailAlreadyExistsException("Já existe cadastro para nome de usuário ou email");
         }
 
         final User userSaved = userRepository.save(user);
@@ -67,6 +73,17 @@ public class UserService {
         logger.info("Usuário criado com sucesso: username={}, userId={}, role={}",
                 userSaved.getUsername(),
                 userSaved.getUserId(),
-                role.getName());
+                userSaved.getRoles());
+
+        return new RegisterUserResponse(userSaved.getUserId());
+    }
+
+    public List<UserDTO> getUsers(final int page,
+                                  final int size) {
+        final Page<User> users = this.userRepository.findAll(PageRequest.of(page, size));
+
+        return users.stream()
+                .map(UserMapper::toUser)
+                .toList();
     }
 }
