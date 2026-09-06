@@ -1,4 +1,4 @@
-package br.com.orderflow.domain.security;
+package br.com.orderflow.domain.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +17,14 @@ public class Role {
     private Long roleId;
 
     private String name;
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     public void setRoleId(Long id) {
         this.roleId = id;

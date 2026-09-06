@@ -1,6 +1,6 @@
-package br.com.orderflow.repository;
+package br.com.orderflow.repository.user;
 
-import br.com.orderflow.domain.security.Role;
+import br.com.orderflow.domain.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
