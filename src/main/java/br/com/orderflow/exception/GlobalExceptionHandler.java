@@ -1,5 +1,8 @@
 package br.com.orderflow.exception;
 
+import br.com.orderflow.client.exception.AddressProviderUnavailableException;
+import br.com.orderflow.client.exception.CepNotFoundException;
+import br.com.orderflow.client.exception.InvalidCepException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +71,30 @@ public class GlobalExceptionHandler {
         logger.error("Usuário não encontrado: method={}, path={}", request.getMethod(), request.getRequestURI());
 
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidCepException.class)
+    public ResponseEntity<ApiErrorDetails> handleInvalidCepException(
+            final InvalidCepException exception) {
+        logger.warn("Consulta de CEP recusada por formato inválido");
+
+        return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(CepNotFoundException.class)
+    public ResponseEntity<ApiErrorDetails> handleCepNotFoundException(
+            final CepNotFoundException exception) {
+        logger.warn("CEP não encontrado");
+
+        return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(AddressProviderUnavailableException.class)
+    public ResponseEntity<ApiErrorDetails> handleAddressProviderUnavailableException(
+            final AddressProviderUnavailableException exception) {
+        logger.error("Serviço de endereço indisponível");
+
+        return buildResponse(HttpStatus.SERVICE_UNAVAILABLE, exception.getMessage());
     }
 
     private ResponseEntity<ApiErrorDetails> buildResponse(final HttpStatus status, final String message) {
