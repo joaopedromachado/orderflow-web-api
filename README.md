@@ -8,7 +8,7 @@ A ideia é simular um sistema de pedidos onde a criação de um pedido dispara u
 
 - Java 21 + Spring Boot
 - PostgreSQL com Flyway para migrations
-- RabbitMQ para processamento assíncrono
+- RabbitMQ para processamento assíncrono (Kafka como débito técnico futuro)
 - AWS S3 e Lambda
 - Resend para envio de email
 - Thymeleaf para geração de relatórios dos pedidos em PDF
