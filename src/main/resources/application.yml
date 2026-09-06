@@ -3,9 +3,9 @@ spring:
     name: orderflow
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${USERNAME_DB}
-    password: ${PASSWORD_DB}
-    url: ${URL_DATABASE}
+    username: ${USERNAME_DB} # root
+    password: ${PASSWORD_DB} # "123456"
+    url: jdbc:postgresql://localhost:5432/orderflow_db
   jpa:
     hibernate:
       ddl-auto: validate
