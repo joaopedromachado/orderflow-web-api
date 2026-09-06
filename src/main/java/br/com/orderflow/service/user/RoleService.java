@@ -1,7 +1,7 @@
-package br.com.orderflow.service;
+package br.com.orderflow.service.user;
 
-import br.com.orderflow.domain.security.Role;
-import br.com.orderflow.repository.RoleRepository;
+import br.com.orderflow.domain.user.Role;
+import br.com.orderflow.repository.user.RoleRepository;
 import org.springframework.stereotype.Service;
 
 @Service

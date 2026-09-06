@@ -1,23 +1,26 @@
 package br.com.orderflow.service.user;
 
-import br.com.orderflow.domain.user.Role;
-import br.com.orderflow.domain.user.User;
-import br.com.orderflow.exception.UsernameOrEmailAlreadyExistsException;
-import br.com.orderflow.exception.UsernameNotFoundException;
-import br.com.orderflow.mapper.user.UserMapper;
-import br.com.orderflow.repository.user.UserRepository;
 import br.com.orderflow.api.controller.v1.auth.dto.request.RegisterUserRequest;
 import br.com.orderflow.api.controller.v1.auth.dto.response.RegisterUserResponse;
-import br.com.orderflow.service.user.dto.UserDTO;
+import br.com.orderflow.api.controller.v1.user.dto.response.UserUpdateResponse;
+import br.com.orderflow.domain.user.Role;
+import br.com.orderflow.domain.user.User;
+import br.com.orderflow.exception.UserNotFoundException;
+import br.com.orderflow.exception.UsernameNotFoundException;
+import br.com.orderflow.exception.UsernameOrEmailAlreadyExistsException;
+import br.com.orderflow.mapper.user.UserMapper;
+import br.com.orderflow.repository.user.UserRepository;
+import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
+import br.com.orderflow.service.user.dto.UserUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -26,14 +29,11 @@ public class UserService {
 
     private final RoleService roleService;
     private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
-    
+
     public UserService(final RoleService roleService,
-                       final UserRepository userRepository,
-                       final ObjectMapper objectMapper) {
+                       final UserRepository userRepository) {
         this.roleService = roleService;
         this.userRepository = userRepository;
-        this.objectMapper = objectMapper;
     }
 
     public User getUserByUsername(final String username) {
@@ -41,6 +41,13 @@ public class UserService {
 
         return this.userRepository.findUserByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Nome de usuário não foi encontrado."));
+    }
+
+    private User getUserById(final String id) {
+        logger.debug("Buscando usuário por id={}", id);
+
+        return this.userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ou não existe."));
     }
 
     private boolean verifyUsernameOrEmailExists(final String username,
@@ -56,7 +63,7 @@ public class UserService {
     public RegisterUserResponse register(final RegisterUserRequest registerUserRequest) {
         logger.info("Iniciando cadastro de usuário: username={}", registerUserRequest.username());
 
-        final User user = objectMapper.convertValue(registerUserRequest, User.class);
+        final User user = UserMapper.toUser(registerUserRequest);
         final Role role = this.roleService.getRoleByName(Role.Values.BASIC.name());
 
         user.setRoles(Set.of(role));
@@ -78,12 +85,36 @@ public class UserService {
         return new RegisterUserResponse(userSaved.getUserId());
     }
 
-    public List<UserDTO> getUsers(final int page,
-                                  final int size) {
+    public UserUpdateResponse update(final UserUpdateDTO userUpdateDTO,
+                                     final String token) {
+        final User user = this.getUserById(token);
+
+        user.setUsername(userUpdateDTO.username());
+        user.setEmail(userUpdateDTO.email());
+        user.setCurrentUpdated();
+
+        final User userSaved = this.userRepository.save(user);
+
+        return new UserUpdateResponse(userSaved.getUsername(), userSaved.getEmail());
+    }
+
+    public List<UserResponse> getUsers(final int page,
+                                       final int size) {
         final Page<User> users = this.userRepository.findAll(PageRequest.of(page, size));
 
         return users.stream()
-                .map(UserMapper::toUser)
+                .map(UserMapper::toUserDTO)
                 .toList();
+    }
+
+    public void deleteUserById(final String id) {
+        logger.info("Iniciando remoção de usuário com id={}", id);
+        try {
+            this.userRepository.deleteById(UUID.fromString(id));
+        } catch (Exception e) {
+            logger.error("Erro ao remover id={}, error={}", id, e.getMessage());
+            throw new UserNotFoundException("Usuário não foi encontrado ou não existe");
+        }
+        logger.info("Usuário removido com sucesso, id={}", id);
     }
 }

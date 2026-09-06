@@ -2,14 +2,14 @@ package br.com.orderflow.exception;
 
 import java.time.Instant;
 
-public class ApiError {
+public class ApiErrorDetails {
 
     private String error;
     private String message;
     private int status;
     private Instant timestamp;
 
-    public ApiError(Builder builder) {
+    public ApiErrorDetails(Builder builder) {
         this.error = builder.error;
         this.message = builder.message;
         this.status = builder.status;
@@ -74,8 +74,8 @@ public class ApiError {
             return this;
         }
 
-        public ApiError build() {
-            return new ApiError(this);
+        public ApiErrorDetails build() {
+            return new ApiErrorDetails(this);
         }
 
     }

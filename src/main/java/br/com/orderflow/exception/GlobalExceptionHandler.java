@@ -1,17 +1,14 @@
-package br.com.orderflow.config;
+package br.com.orderflow.exception;
 
-import br.com.orderflow.exception.ApiError;
-import br.com.orderflow.exception.UserAlreadyExistsException;
-import br.com.orderflow.exception.UsernameNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -21,9 +18,9 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ApiError> handleUserAlreadyExistsException(
-            final UserAlreadyExistsException exception,
+    @ExceptionHandler(UsernameOrEmailAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorDetails> handleUserAlreadyExistsException(
+            final UsernameOrEmailAlreadyExistsException exception,
             final HttpServletRequest request) {
         logger.warn("Usuário já existente: method={}, path={}", request.getMethod(), request.getRequestURI());
 
@@ -31,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
-    public ResponseEntity<ApiError> handleInvalidCredentials(
+    public ResponseEntity<ApiErrorDetails> handleInvalidCredentials(
             final RuntimeException exception,
             final HttpServletRequest request) {
         logger.warn("Tentativa de login inválida: exception={}, method={}, path={}",
@@ -41,7 +38,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationException(
+    public ResponseEntity<ApiErrorDetails> handleValidationException(
             final MethodArgumentNotValidException exception,
             final HttpServletRequest request) {
         final String message = exception.getBindingResult().getFieldErrors().stream()
@@ -55,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleUnexpectedException(
+    public ResponseEntity<ApiErrorDetails> handleUnexpectedException(
             final Exception exception,
             final HttpServletRequest request) {
         logger.error("Erro inesperado: method={}, path={}",
@@ -64,14 +61,23 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro interno.");
     }
 
-    private ResponseEntity<ApiError> buildResponse(final HttpStatus status, final String message) {
-        final ApiError apiError = new ApiError.Builder()
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiErrorDetails> handleUserNotFoundException(
+            final UserNotFoundException exception,
+            final HttpServletRequest request) {
+        logger.error("Usuário não encontrado: method={}, path={}", request.getMethod(), request.getRequestURI());
+
+        return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    private ResponseEntity<ApiErrorDetails> buildResponse(final HttpStatus status, final String message) {
+        final ApiErrorDetails apiErrorDetails = new ApiErrorDetails.Builder()
                 .error(status.getReasonPhrase())
                 .message(message)
                 .status(status.value())
                 .timestamp(Instant.now())
                 .build();
 
-        return ResponseEntity.status(status).body(apiError);
+        return ResponseEntity.status(status).body(apiErrorDetails);
     }
 }
