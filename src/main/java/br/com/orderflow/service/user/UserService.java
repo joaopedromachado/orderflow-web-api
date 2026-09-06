@@ -108,13 +108,13 @@ public class UserService {
     }
 
     public void deleteUserById(final String id) {
-        logger.info("Iniciando remoção de usuário com id={}", id);
+        logger.info("Iniciando remoção de usuário");
         try {
             this.userRepository.deleteById(UUID.fromString(id));
         } catch (Exception e) {
-            logger.error("Erro ao remover id={}, error={}", id, e.getMessage());
+            logger.error("Erro ao remover usuário, error=", e.getCause());
             throw new UserNotFoundException("Usuário não foi encontrado ou não existe");
         }
-        logger.info("Usuário removido com sucesso, id={}", id);
+        logger.info("Usuário removido com sucesso");
     }
 }

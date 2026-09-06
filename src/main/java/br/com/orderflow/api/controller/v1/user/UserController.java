@@ -52,7 +52,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable final String id) {
         this.userService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
