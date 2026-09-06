@@ -99,7 +99,7 @@ class AuthControllerTest {
         final Role basicRole = basicRole();
         final User user = registeredUser(basicRole);
         final Jwt jwt = Jwt.withTokenValue("access-token")
-                .header("alg", "RS256")
+                .header("alg", "Bcrypt")
                 .claim("sub", REGISTERED_USER_ID.toString())
                 .build();
 
@@ -111,8 +111,8 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(LOGIN_USER_REQUEST_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").value("access-token"))
-                .andExpect(jsonPath("$.expireIn").value(300));
+                .andExpect(jsonPath("$.access_token").value("access-token"))
+                .andExpect(jsonPath("$.expire_in").value(300));
 
         verify(this.userService).getUserByUsername(REGISTER_USER_REQUEST.username());
         verify(this.jwtEncoder).encode(any(JwtEncoderParameters.class));

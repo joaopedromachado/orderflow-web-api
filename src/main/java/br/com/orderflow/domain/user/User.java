@@ -80,6 +80,8 @@ public class User {
         this.updatedAt = builder.updatedAt;
     }
 
+    public User() {}
+
     public UUID getUserId() {
         return userId;
     }
