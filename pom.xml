@@ -32,6 +32,7 @@
         <sonar.projectKey>joaopedromachado_orderflow-web-api</sonar.projectKey>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>**/dto/**,**/config/**,**/domain/**,**/exception/**,**/mapper/**,**/repository/**,**/OrderflowApplication.java</sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
@@ -116,6 +117,18 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.20.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.27.7</version>
+            <scope>test</scope>
+        </dependency>
 <!--        TODO Configurar Spring actuator-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
@@ -151,7 +164,17 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
+                            <excludes>
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/config/**</exclude>
+                                <exclude>**/domain/**</exclude>
+                                <exclude>**/exception/**</exclude>
+                                <exclude>**/mapper/**</exclude>
+                                <exclude>**/repository/**</exclude>
+                                <exclude>**/OrderflowApplication.class</exclude>
+                            </excludes>
                             <formats>
+                                <format>HTML</format>
                                 <format>XML</format>
                             </formats>
                         </configuration>
