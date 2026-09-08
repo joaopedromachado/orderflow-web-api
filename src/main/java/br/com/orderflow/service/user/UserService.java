@@ -2,21 +2,28 @@ package br.com.orderflow.service.user;
 
 import br.com.orderflow.api.controller.v1.auth.dto.request.RegisterUserRequest;
 import br.com.orderflow.api.controller.v1.auth.dto.response.RegisterUserResponse;
+import br.com.orderflow.api.controller.v1.user.dto.request.AddressRequest;
+import br.com.orderflow.api.controller.v1.user.dto.response.AddressResponse;
+import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
 import br.com.orderflow.api.controller.v1.user.dto.response.UserUpdateResponse;
+import br.com.orderflow.client.ViaCepClient;
+import br.com.orderflow.client.response.ViaCepResponse;
+import br.com.orderflow.domain.user.Address;
 import br.com.orderflow.domain.user.Role;
 import br.com.orderflow.domain.user.User;
 import br.com.orderflow.exception.UserNotFoundException;
 import br.com.orderflow.exception.UsernameNotFoundException;
 import br.com.orderflow.exception.UsernameOrEmailAlreadyExistsException;
+import br.com.orderflow.mapper.user.AddressMapper;
 import br.com.orderflow.mapper.user.UserMapper;
 import br.com.orderflow.repository.user.UserRepository;
-import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
 import br.com.orderflow.service.user.dto.UserUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -28,11 +35,19 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final RoleService roleService;
+    private final AddressService addressService;
+    private final ViaCepClient viaCepClient;
     private final UserRepository userRepository;
 
-    public UserService(final RoleService roleService,
-                       final UserRepository userRepository) {
+    public UserService(
+            final RoleService roleService,
+            final AddressService addressService,
+            final ViaCepClient viaCepClient,
+            final UserRepository userRepository
+    ) {
         this.roleService = roleService;
+        this.addressService = addressService;
+        this.viaCepClient = viaCepClient;
         this.userRepository = userRepository;
     }
 
@@ -50,8 +65,9 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ou não existe."));
     }
 
-    private boolean verifyUsernameOrEmailExists(final String username,
-                                                final String email) {
+    private boolean verifyUsernameOrEmailExists(
+            final String username,
+            final String email) {
         final boolean userExists = userRepository.existsUserByUsernameOrEmail(username, email);
         logger.debug("Verificação de existência concluída para username={} e email={}: {}",
                 username,
@@ -60,6 +76,7 @@ public class UserService {
         return userExists;
     }
 
+    @Transactional
     public RegisterUserResponse register(final RegisterUserRequest registerUserRequest) {
         logger.info("Iniciando cadastro de usuário: username={}", registerUserRequest.username());
 
@@ -85,8 +102,38 @@ public class UserService {
         return new RegisterUserResponse(userSaved.getUserId());
     }
 
-    public UserUpdateResponse update(final UserUpdateDTO userUpdateDTO,
-                                     final String token) {
+    public AddressResponse registerAddressOnUserProfile(
+            final AddressRequest addressRequest,
+            final String token
+    ) {
+        final User user = this.getUserById(token);
+        final ViaCepResponse viaCepResponse = this.viaCepClient.getAddressByCep(addressRequest.cep());
+        final Address address = AddressMapper.toAddress(viaCepResponse, addressRequest, user);
+        final Address addressSaved = this.addressService.saveAddress(address);
+
+        logger.info("Endereço foi salvo com sucesso, addressId={}", addressSaved.getAddressId());
+
+        return AddressMapper.toAddressResponse(addressSaved);
+    }
+
+    @Transactional
+    public AddressResponse changeAndSetupDefaultAddress(
+            final UUID addressId,
+            final String token
+    ) {
+        final User user = this.getUserById(token);
+        final Address defaultAddress = this.addressService.changeAndSetupDefaultAddress(addressId, user.getUserId());
+
+        logger.info("Endereço padrão alterado com sucesso, userId={}, addressId={}",
+                user.getUserId(), defaultAddress.getAddressId());
+
+        return AddressMapper.toAddressResponse(defaultAddress);
+    }
+
+    public UserUpdateResponse update(
+            final UserUpdateDTO userUpdateDTO,
+            final String token
+    ) {
         final User user = this.getUserById(token);
 
         user.setUsername(userUpdateDTO.username());
@@ -98,8 +145,10 @@ public class UserService {
         return new UserUpdateResponse(userSaved.getUsername(), userSaved.getEmail());
     }
 
-    public List<UserResponse> getUsers(final int page,
-                                       final int size) {
+    public List<UserResponse> getUsers(
+            final int page,
+            final int size
+    ) {
         final Page<User> users = this.userRepository.findAll(PageRequest.of(page, size));
 
         return users.stream()

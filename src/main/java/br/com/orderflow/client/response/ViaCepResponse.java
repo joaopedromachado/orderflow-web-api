@@ -7,5 +7,6 @@ String complemento,
 String bairro,
 String localidade,
 String uf,
+String estado,
 Boolean erro
 ) {}

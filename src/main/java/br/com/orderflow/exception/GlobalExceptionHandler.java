@@ -97,6 +97,14 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.SERVICE_UNAVAILABLE, exception.getMessage());
     }
 
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<ApiErrorDetails> handleAddressNotFoundException(
+            final AddressProviderUnavailableException exception) {
+        logger.error("Endereço não encontrado");
+
+        return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
     private ResponseEntity<ApiErrorDetails> buildResponse(final HttpStatus status, final String message) {
         final ApiErrorDetails apiErrorDetails = new ApiErrorDetails.Builder()
                 .error(status.getReasonPhrase())

@@ -56,6 +56,13 @@ public class User {
     )
     private List<Order> orders;
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Address> addresses;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -76,6 +83,7 @@ public class User {
         this.password = builder.password;
         this.roles = builder.roles;
         this.orders = builder.orders;
+        this.addresses = builder.addresses;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
     }
@@ -130,6 +138,14 @@ public class User {
         this.orders = orders;
     }
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -157,6 +173,7 @@ public class User {
         private String password;
         private Set<Role> roles;
         private List<Order> orders;
+        private List<Address> addresses;
         private Instant createdAt;
         private Instant updatedAt;
 
@@ -187,6 +204,11 @@ public class User {
 
         public Builder orders(List<Order> orders) {
             this.orders = orders;
+            return this;
+        }
+
+        public Builder addresses(List<Address> addresses) {
+            this.addresses = addresses;
             return this;
         }
 
