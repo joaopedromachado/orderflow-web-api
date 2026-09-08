@@ -32,7 +32,7 @@
         <sonar.projectKey>joaopedromachado_orderflow-web-api</sonar.projectKey>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.coverage.exclusions>**/dto/**,**/config/**,**/domain/**,**/exception/**,**/mapper/**,**/repository/**,**/OrderflowApplication.java</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/dto/**,**/config/**,**/domain/**,**/exception/**,**/mapper/**,**/repository/**,**/client/response/**,**/OrderflowApplication.java</sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
@@ -150,6 +150,21 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.15</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/dto/**</exclude>
+                        <exclude>**/config/**</exclude>
+                        <exclude>**/domain/**</exclude>
+                        <exclude>**/exception/**</exclude>
+                        <exclude>**/mapper/**</exclude>
+                        <exclude>**/repository/**</exclude>
+                        <exclude>**/client/response/**</exclude>
+                        <exclude>**/OrderflowApplication.class</exclude>
+                    </excludes>
+                    <formats>
+                        <format>HTML</format>
+                    </formats>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -163,21 +178,6 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/dto/**</exclude>
-                                <exclude>**/config/**</exclude>
-                                <exclude>**/domain/**</exclude>
-                                <exclude>**/exception/**</exclude>
-                                <exclude>**/mapper/**</exclude>
-                                <exclude>**/repository/**</exclude>
-                                <exclude>**/OrderflowApplication.class</exclude>
-                            </excludes>
-                            <formats>
-                                <format>HTML</format>
-                                <format>XML</format>
-                            </formats>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
