@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorDetails> handleUserNotFoundException(
             final UserNotFoundException exception,
             final HttpServletRequest request) {
-        logger.error("Usuário não encontrado: method={}, path={}", request.getMethod(), request.getRequestURI());
+        logger.warn("Usuário não encontrado: method={}, path={}", request.getMethod(), request.getRequestURI());
 
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AddressNotFoundException.class)
     public ResponseEntity<ApiErrorDetails> handleAddressNotFoundException(
             final AddressProviderUnavailableException exception) {
-        logger.error("Endereço não encontrado");
+        logger.warn("Endereço não encontrado");
 
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }

@@ -7,12 +7,12 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class ViaCepConfig {
 
-    private static final String VIA_CEP_BASE_URL = "https://viacep.com.br/ws";
+    private static final String VIACEP_BASE_URL = "https://viacep.com.br/ws";
 
     @Bean
     public RestClient viaCepRestClient() {
         return RestClient.builder()
-                .baseUrl(VIA_CEP_BASE_URL)
+                .baseUrl(VIACEP_BASE_URL)
                 .build();
     }
 }

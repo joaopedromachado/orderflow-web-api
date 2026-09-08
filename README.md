@@ -1,16 +1,16 @@
 # Order Flow API
 
-Projeto de estudo para praticar uma stack Java/Spring mais completa, do backend ao frontend, incluindo mensageria, integração com AWS e autenticação.
+Projeto de estudo para praticar conceitos em Java e Spring de forma completa, do backend ao frontend, incluindo mensageria, integração com AWS e autenticação.
 
-A ideia é simular um sistema de pedidos onde a criação de um pedido dispara um processamento assíncrono (geração de comprovante e notificação por email), em vez de fazer tudo isso na hora, dentro do mesmo request.
+A ideia tem o papel de um e-commerce, aonde haverá um sistema de pedidos; a criação de um pedido dispara um processamento assíncrono (geração de comprovante e notificação por email).
 
 Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
 
-## Stack planejada
+## Tecnologias
 
 - Java 21 + Spring Boot
 - PostgreSQL com Flyway para migrations
-- RabbitMQ para processamento assíncrono
+- RabbitMQ para processamento assíncrono (Kafka para ser implementado futuramente)
 - AWS S3 e Lambda
 - Resend para envio de email
 - Thymeleaf para geração de relatórios dos pedidos em PDF
@@ -19,8 +19,8 @@ Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
 - Consumindo API externa ViaCEP
 - Docker para conteinerização da aplicação
 
-### Stack adicional (Desafio)
-- React/TypeScript/Tailwind para o frontend
+### Stack adicional (outro projeto separado)
+- Desenvolver o Frontend utilizando ReactJS/TS
 
 ## Como rodar
 

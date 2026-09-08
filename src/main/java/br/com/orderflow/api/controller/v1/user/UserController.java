@@ -3,10 +3,10 @@ package br.com.orderflow.api.controller.v1.user;
 import br.com.orderflow.api.controller.v1.user.dto.request.AddressRequest;
 import br.com.orderflow.api.controller.v1.user.dto.request.UserUpdateRequest;
 import br.com.orderflow.api.controller.v1.user.dto.response.AddressResponse;
+import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
 import br.com.orderflow.api.controller.v1.user.dto.response.UserUpdateResponse;
 import br.com.orderflow.mapper.user.UserMapper;
 import br.com.orderflow.service.user.UserService;
-import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
 import br.com.orderflow.service.user.dto.UserUpdateDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,8 +67,8 @@ public class UserController {
     @GetMapping("/admin")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<UserResponse>> getUsers(
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "20") final int size,
+            @RequestParam(defaultValue = "0") final int page
     ) {
         return ResponseEntity.ok(this.userService.getUsers(page, size));
     }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class UsernameOrEmailAlreadyExistsException extends RuntimeException {
-    public UsernameOrEmailAlreadyExistsException(@Nullable String message) {
+    public UsernameOrEmailAlreadyExistsException(@Nullable final String message) {
         super(message);
     }
 }
