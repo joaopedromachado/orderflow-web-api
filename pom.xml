@@ -184,6 +184,7 @@
                     </excludes>
                     <formats>
                         <format>HTML</format>
+                        <format>XML</format>
                     </formats>
                 </configuration>
                 <executions>
