@@ -1,11 +1,14 @@
 package br.com.orderflow.service.user;
 
+import br.com.orderflow.api.controller.v1.user.dto.response.AddressResponse;
+import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
+import br.com.orderflow.client.ViaCepClient;
+import br.com.orderflow.domain.user.Address;
 import br.com.orderflow.domain.user.Role;
 import br.com.orderflow.domain.user.User;
 import br.com.orderflow.exception.UserNotFoundException;
 import br.com.orderflow.exception.UsernameNotFoundException;
 import br.com.orderflow.exception.UsernameOrEmailAlreadyExistsException;
-import br.com.orderflow.api.controller.v1.user.dto.response.UserResponse;
 import br.com.orderflow.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +22,17 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
+import static br.com.orderflow.stub.AddressStub.ADDRESS_ID;
+import static br.com.orderflow.stub.AddressStub.ADDRESS_REQUEST;
+import static br.com.orderflow.stub.AddressStub.ADDRESS_RESPONSE;
+import static br.com.orderflow.stub.AddressStub.SIMPLE_ADDRESS;
+import static br.com.orderflow.stub.AddressStub.VIA_CEP_RESPONSE;
+import static br.com.orderflow.stub.AddressStub.savedAddress;
 import static br.com.orderflow.stub.UserStub.REGISTERED_USER_ID;
 import static br.com.orderflow.stub.UserStub.REGISTER_USER_REQUEST;
 import static br.com.orderflow.stub.UserStub.SIMPLE_USER;
-import static br.com.orderflow.stub.UserStub.USER_UPDATE_DTO;
 import static br.com.orderflow.stub.UserStub.USER_PAGE;
+import static br.com.orderflow.stub.UserStub.USER_UPDATE_DTO;
 import static br.com.orderflow.stub.UserStub.basicRole;
 import static br.com.orderflow.stub.UserStub.registeredUser;
 import static br.com.orderflow.stub.UserStub.userToUpdate;
@@ -45,6 +54,12 @@ class UserServiceTest {
 
     @Mock
     private RoleService roleService;
+
+    @Mock
+    private AddressService addressService;
+
+    @Mock
+    private ViaCepClient viaCepClient;
 
     @InjectMocks
     private UserService userService;
@@ -211,7 +226,6 @@ class UserServiceTest {
         userService.deleteUserById(userId.toString());
 
         verify(userRepository).deleteById(userId);
-
     }
 
     @Test
@@ -226,6 +240,49 @@ class UserServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
 
         verify(this.userRepository).deleteById(userId);
+    }
 
+    @Test
+    @DisplayName("Deve cadastrar endereço solicitado pelo usuário autenticado.")
+    void deveCadastrarEndereco_quandoSolicitadoPorUsuarioAutenticado() {
+        final var address = savedAddress(SIMPLE_USER);
+
+        when(this.userRepository.findById(REGISTERED_USER_ID)).thenReturn(Optional.of(SIMPLE_USER));
+        when(this.viaCepClient.getAddressByCep(ADDRESS_REQUEST.cep())).thenReturn(VIA_CEP_RESPONSE);
+        when(this.addressService.saveAddress(any())).thenReturn(address);
+
+        final var response = this.userService.registerAddressOnUserProfile(ADDRESS_REQUEST, REGISTERED_USER_ID.toString());
+
+        assertThat(response)
+                .extracting(AddressResponse::addressId, AddressResponse::postalCode)
+                .containsExactly(
+                        ADDRESS_RESPONSE.addressId(),
+                        ADDRESS_RESPONSE.postalCode()
+                );
+
+        verify(this.userRepository).findById(any());
+        verify(this.viaCepClient).getAddressByCep(anyString());
+        verify(this.addressService).saveAddress(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar endereço padrão quando solicitado pelo usuário autenticado")
+    void deveRetornarEnderecoPadrao_quandoSolicitadoPorUsuarioAutenticado() {
+        final Address address = SIMPLE_ADDRESS;
+        address.setDefaultAddress(false);
+        when(this.userRepository.findById(REGISTERED_USER_ID)).thenReturn(Optional.of(SIMPLE_USER));
+        when(this.addressService.changeAndSetupDefaultAddress(ADDRESS_ID, REGISTERED_USER_ID)).thenReturn(address);
+
+        final var response = this.userService.changeAndSetupDefaultAddress(ADDRESS_ID, REGISTERED_USER_ID.toString());
+
+        assertThat(response)
+                .extracting(AddressResponse::addressId, AddressResponse::defaultAddress)
+                .containsExactly(
+                        ADDRESS_RESPONSE.addressId(),
+                        ADDRESS_RESPONSE.defaultAddress()
+                );
+
+        verify(this.userRepository).findById(any());
+        verify(this.addressService).changeAndSetupDefaultAddress(any(), any());
     }
 }

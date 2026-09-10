@@ -9,7 +9,7 @@ public class ApiErrorDetails {
     private int status;
     private Instant timestamp;
 
-    public ApiErrorDetails(Builder builder) {
+    public ApiErrorDetails(final Builder builder) {
         this.error = builder.error;
         this.message = builder.message;
         this.status = builder.status;
@@ -20,7 +20,7 @@ public class ApiErrorDetails {
         return error;
     }
 
-    public void setError(String error) {
+    public void setError(final String error) {
         this.error = error;
     }
 
@@ -28,7 +28,7 @@ public class ApiErrorDetails {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 
@@ -36,7 +36,7 @@ public class ApiErrorDetails {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(final int status) {
         this.status = status;
     }
 
@@ -44,7 +44,7 @@ public class ApiErrorDetails {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(final Instant timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -54,22 +54,22 @@ public class ApiErrorDetails {
         private int status;
         private Instant timestamp;
 
-        public Builder error(String error) {
+        public Builder error(final String error) {
             this.error = error;
             return this;
         }
 
-        public Builder message(String message) {
+        public Builder message(final String message) {
             this.message = message;
             return this;
         }
 
-        public Builder status(int status) {
+        public Builder status(final int status) {
             this.status = status;
             return this;
         }
 
-        public Builder timestamp(Instant timestamp) {
+        public Builder timestamp(final Instant timestamp) {
             this.timestamp = timestamp;
             return this;
         }

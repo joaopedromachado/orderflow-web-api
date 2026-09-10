@@ -56,6 +56,13 @@ public class User {
     )
     private List<Order> orders;
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Address> addresses;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -69,13 +76,14 @@ public class User {
         if (createdAt == null) createdAt = Instant.now();
     }
 
-    public User(Builder builder) {
+    public User(final Builder builder) {
         this.userId = builder.userId;
         this.username = builder.username;
         this.email = builder.email;
         this.password = builder.password;
         this.roles = builder.roles;
         this.orders = builder.orders;
+        this.addresses = builder.addresses;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
     }
@@ -86,7 +94,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(final UUID userId) {
         this.userId = userId;
     }
 
@@ -94,7 +102,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -102,7 +110,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -110,7 +118,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -118,7 +126,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(final Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -126,15 +134,23 @@ public class User {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(final List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(final List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(final Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -146,7 +162,7 @@ public class User {
         this.updatedAt = Instant.now();
     }
 
-    public boolean isValidLogin(LoginUserRequest request, PasswordEncoder passwordEncoder) {
+    public boolean isValidLogin(final LoginUserRequest request, final PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(request.password(), this.password);
     }
 
@@ -157,45 +173,51 @@ public class User {
         private String password;
         private Set<Role> roles;
         private List<Order> orders;
+        private List<Address> addresses;
         private Instant createdAt;
         private Instant updatedAt;
 
-        public Builder userId(UUID userId) {
+        public Builder userId(final UUID userId) {
             this.userId = userId;
             return this;
         }
 
-        public Builder username(String username) {
+        public Builder username(final String username) {
             this.username = username;
             return this;
         }
 
-        public Builder email(String email) {
+        public Builder email(final String email) {
             this.email = email;
             return this;
         }
 
-        public Builder password(String password) {
+        public Builder password(final String password) {
             this.password = password;
             return this;
         }
 
-        public Builder roles(Set<Role> roles) {
+        public Builder roles(final Set<Role> roles) {
             this.roles = roles;
             return this;
         }
 
-        public Builder orders(List<Order> orders) {
+        public Builder orders(final List<Order> orders) {
             this.orders = orders;
             return this;
         }
 
-        public Builder createdAt(Instant createdAt) {
+        public Builder addresses(final List<Address> addresses) {
+            this.addresses = addresses;
+            return this;
+        }
+
+        public Builder createdAt(final Instant createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder updatedAt(Instant updatedAt) {
+        public Builder updatedAt(final Instant updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }

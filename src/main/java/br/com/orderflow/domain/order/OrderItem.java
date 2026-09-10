@@ -1,6 +1,14 @@
 package br.com.orderflow.domain.order;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -32,7 +40,7 @@ public class OrderItem {
         return orderItemId;
     }
 
-    public void setOrderItemId(UUID orderItemId) {
+    public void setOrderItemId(final UUID orderItemId) {
         this.orderItemId = orderItemId;
     }
 
@@ -40,7 +48,7 @@ public class OrderItem {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(final Order order) {
         this.order = order;
     }
 
@@ -48,7 +56,7 @@ public class OrderItem {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(final Product product) {
         this.product = product;
     }
 
@@ -56,7 +64,7 @@ public class OrderItem {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(final BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
@@ -64,7 +72,7 @@ public class OrderItem {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(final Integer quantity) {
         this.quantity = quantity;
     }
 }

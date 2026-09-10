@@ -80,7 +80,7 @@ public class Order {
         return orderId;
     }
 
-    public void setOrderId(UUID orderId) {
+    public void setOrderId(final UUID orderId) {
         this.orderId = orderId;
     }
 
@@ -88,7 +88,7 @@ public class Order {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(final OrderStatus status) {
         this.status = status;
     }
 
@@ -96,7 +96,7 @@ public class Order {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
+    public void setTotalAmount(final BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -104,7 +104,7 @@ public class Order {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(final Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -112,7 +112,7 @@ public class Order {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(final Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -120,7 +120,7 @@ public class Order {
         return processedAt;
     }
 
-    public void setProcessedAt(Instant processedAt) {
+    public void setProcessedAt(final Instant processedAt) {
         this.processedAt = processedAt;
     }
 
@@ -128,7 +128,7 @@ public class Order {
         return receiptUrl;
     }
 
-    public void setReceiptUrl(String receiptUrl) {
+    public void setReceiptUrl(final String receiptUrl) {
         this.receiptUrl = receiptUrl;
     }
 
@@ -136,7 +136,7 @@ public class Order {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(final List<OrderItem> items) {
         this.items = items;
     }
 
@@ -144,7 +144,7 @@ public class Order {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(final User user) {
         this.user = user;
     }
 }

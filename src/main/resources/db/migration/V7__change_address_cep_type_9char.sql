@@ -1,0 +1,2 @@
+ALTER TABLE tb_address
+ALTER COLUMN cep TYPE VARCHAR(9);

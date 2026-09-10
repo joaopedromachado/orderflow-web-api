@@ -1,29 +1,30 @@
 # Order Flow API
 
-Projeto de estudo para praticar uma stack Java/Spring mais completa, do backend ao frontend, incluindo mensageria, integração com AWS, autenticação com Spring Security utilizando assinatura JWT e OAuth2 Resource e JaCoCo para cobertura de testes e geração de relatórios com SonarQube Cloud para automatizar a análise de qualidade, segurança e padronização de forma contínua.
+Projeto de estudo para praticar conceitos em Java e Spring de forma completa, do backend ao frontend, incluindo mensageria, integração com AWS e autenticação.
 
-A ideia é simular um sistema de pedidos onde a criação de um pedido dispara um processamento assíncrono (geração de comprovante e notificação por email), em vez de fazer tudo isso na hora, dentro do mesmo request.
+A ideia tem o papel de um e-commerce, aonde haverá um sistema de pedidos; a criação de um pedido dispara um processamento assíncrono (geração de comprovante e notificação por email).
 
-## Stack planejada
+Ainda em desenvolvimento, então bastante coisa aqui vai mudar.
+
+## Tecnologias
 
 - Java 21 + Spring Boot
 - PostgreSQL com Flyway para migrations
-- RabbitMQ para processamento assíncrono (Kafka como débito técnico futuro)
+- RabbitMQ para processamento assíncrono (Kafka para ser implementado futuramente)
 - AWS S3 e Lambda
 - Resend para envio de email
 - Thymeleaf para geração de relatórios dos pedidos em PDF
-- JaCoCo para cobertura de testes
 - Spring Security com JWT + OAUTH2
 - Swagger para documentação
 - Consumindo API externa ViaCEP
 - Docker para conteinerização da aplicação
 
-### Stack adicional (Desafio)
-- React/TypeScript/Tailwind para o frontend
+### Stack adicional (outro projeto separado)
+- Desenvolver o Frontend utilizando ReactJS/TS
 
 ## Como rodar
 
-Precisa ter o docker-cli e docker compose instalados na máquina para executar o comando abaixo. Para sistemas windows é necessário ter o WSL instalado na máquina e lembrar de habilitar a Virtualização da máquina dentro da BIOS.
+Por enquanto o projeto ainda não tem o `docker-compose.yml` nem os módulos criados. Isso deve ser um dos primeiros passos.
 
 ```
 docker compose up -d

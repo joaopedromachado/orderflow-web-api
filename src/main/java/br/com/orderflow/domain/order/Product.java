@@ -40,7 +40,7 @@ public class Product {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(final UUID productId) {
         this.productId = productId;
     }
 
@@ -48,7 +48,7 @@ public class Product {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(final List<OrderItem> items) {
         this.items = items;
     }
 
@@ -56,7 +56,7 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -64,7 +64,7 @@ public class Product {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(final BigDecimal price) {
         this.price = price;
     }
 
@@ -72,7 +72,7 @@ public class Product {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public void setStock(final Integer stock) {
         this.stock = stock;
     }
 
@@ -80,7 +80,7 @@ public class Product {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(final boolean active) {
         this.active = active;
     }
 }

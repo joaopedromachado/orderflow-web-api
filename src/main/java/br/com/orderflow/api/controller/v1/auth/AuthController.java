@@ -36,9 +36,9 @@ public class AuthController {
     private final UserService userService;
     private BCryptPasswordEncoder passwordEncoder;
 
-    public AuthController(JwtEncoder jwtEncoder,
-                          UserService userService,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthController(final JwtEncoder jwtEncoder,
+                          final UserService userService,
+                          final BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jwtEncoder = jwtEncoder;
         this.userService = userService;
         this.passwordEncoder = bCryptPasswordEncoder;
