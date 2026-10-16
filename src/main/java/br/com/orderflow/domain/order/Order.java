@@ -76,11 +76,26 @@ public class Order {
         if (createdAt == null) createdAt = Instant.now();
     }
 
+    public Order(Builder builder) {
+        this.orderId = builder.orderId;
+        this.status = builder.status;
+        this.totalAmount = builder.totalAmount;
+        this.createdAt = builder.createdAt;
+        this.updatedAt = builder.updatedAt;
+        this.processedAt = builder.processedAt;
+        this.receiptUrl = builder.receiptUrl;
+        this.items = builder.items;
+        this.user = builder.user;
+    }
+
+    public Order() {
+    }
+
     public UUID getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(final UUID orderId) {
+    public void setOrderId(UUID orderId) {
         this.orderId = orderId;
     }
 
@@ -88,7 +103,7 @@ public class Order {
         return status;
     }
 
-    public void setStatus(final OrderStatus status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -96,7 +111,7 @@ public class Order {
         return totalAmount;
     }
 
-    public void setTotalAmount(final BigDecimal totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -104,7 +119,7 @@ public class Order {
         return createdAt;
     }
 
-    public void setCreatedAt(final Instant createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -112,7 +127,7 @@ public class Order {
         return updatedAt;
     }
 
-    public void setUpdatedAt(final Instant updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -120,7 +135,7 @@ public class Order {
         return processedAt;
     }
 
-    public void setProcessedAt(final Instant processedAt) {
+    public void setProcessedAt(Instant processedAt) {
         this.processedAt = processedAt;
     }
 
@@ -128,7 +143,7 @@ public class Order {
         return receiptUrl;
     }
 
-    public void setReceiptUrl(final String receiptUrl) {
+    public void setReceiptUrl(String receiptUrl) {
         this.receiptUrl = receiptUrl;
     }
 
@@ -136,7 +151,7 @@ public class Order {
         return items;
     }
 
-    public void setItems(final List<OrderItem> items) {
+    public void setItems(List<OrderItem> items) {
         this.items = items;
     }
 
@@ -144,7 +159,68 @@ public class Order {
         return user;
     }
 
-    public void setUser(final User user) {
+    public void setUser(User user) {
         this.user = user;
+    }
+
+    public static class Builder {
+        private UUID orderId;
+        private OrderStatus status;
+        private BigDecimal totalAmount;
+        private Instant createdAt;
+        private Instant updatedAt;
+        private Instant processedAt;
+        private String receiptUrl;
+        private List<OrderItem> items;
+        private User user;
+
+        public Builder orderId(UUID orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
+        public Builder status(OrderStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder totalAmount(BigDecimal totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder createdAt(Instant createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder processedAt(Instant processedAt) {
+            this.processedAt = processedAt;
+            return this;
+        }
+
+        public Builder receiptUrl(String receiptUrl) {
+            this.receiptUrl = receiptUrl;
+            return this;
+        }
+
+        public Builder items(List<OrderItem> items) {
+            this.items = items;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
     }
 }

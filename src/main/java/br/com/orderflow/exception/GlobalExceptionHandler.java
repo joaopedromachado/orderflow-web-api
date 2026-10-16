@@ -99,8 +99,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AddressNotFoundException.class)
     public ResponseEntity<ApiErrorDetails> handleAddressNotFoundException(
-            final AddressProviderUnavailableException exception) {
+            final AddressNotFoundException exception) {
         logger.warn("Endereço não encontrado");
+
+        return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ApiErrorDetails> handleProductNotFoundException(
+            final ProductNotFoundException exception) {
+        logger.warn("Produto não encontrado");
 
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }

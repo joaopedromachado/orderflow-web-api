@@ -58,7 +58,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Nome de usuário não foi encontrado."));
     }
 
-    private User getUserById(final String id) {
+    public User getUserById(final String id) {
         logger.debug("Buscando usuário por id={}", id);
 
         return this.userRepository.findById(UUID.fromString(id))
@@ -74,32 +74,6 @@ public class UserService {
                 email,
                 userExists);
         return userExists;
-    }
-
-    @Transactional
-    public RegisterUserResponse register(final RegisterUserRequest registerUserRequest) {
-        logger.info("Iniciando cadastro de usuário: username={}", registerUserRequest.username());
-
-        final User user = UserMapper.toUser(registerUserRequest);
-        final Role role = this.roleService.getRoleByName(Role.Values.BASIC.name());
-
-        user.setRoles(Set.of(role));
-
-        if (this.verifyUsernameOrEmailExists(user.getUsername(), user.getEmail())) {
-            logger.warn("Cadastro recusado: username={} ou email={} já está em uso",
-                    registerUserRequest.username(),
-                    registerUserRequest.email());
-            throw new UsernameOrEmailAlreadyExistsException("Já existe cadastro para nome de usuário ou email");
-        }
-
-        final User userSaved = userRepository.save(user);
-
-        logger.info("Usuário criado com sucesso: username={}, userId={}, role={}",
-                userSaved.getUsername(),
-                userSaved.getUserId(),
-                userSaved.getRoles());
-
-        return new RegisterUserResponse(userSaved.getUserId());
     }
 
     public AddressResponse registerAddressOnUserProfile(
@@ -130,6 +104,32 @@ public class UserService {
         return AddressMapper.toAddressResponse(defaultAddress);
     }
 
+    @Transactional
+    public RegisterUserResponse register(final RegisterUserRequest registerUserRequest) {
+        logger.info("Iniciando cadastro de usuário: username={}", registerUserRequest.username());
+
+        final User user = UserMapper.toUser(registerUserRequest);
+        final Role role = this.roleService.getRoleByName(Role.Values.BASIC.name());
+
+        user.setRoles(Set.of(role));
+
+        if (this.verifyUsernameOrEmailExists(user.getUsername(), user.getEmail())) {
+            logger.warn("Cadastro recusado: username={} ou email={} já está em uso",
+                    registerUserRequest.username(),
+                    registerUserRequest.email());
+            throw new UsernameOrEmailAlreadyExistsException("Já existe cadastro para nome de usuário ou email");
+        }
+
+        final User userSaved = userRepository.save(user);
+
+        logger.info("Usuário criado com sucesso: username={}, userId={}, role={}",
+                userSaved.getUsername(),
+                userSaved.getUserId(),
+                userSaved.getRoles());
+
+        return new RegisterUserResponse(userSaved.getUserId());
+    }
+
     public UserUpdateResponse update(
             final UserUpdateDTO userUpdateDTO,
             final String token
@@ -152,7 +152,7 @@ public class UserService {
         final Page<User> users = this.userRepository.findAll(PageRequest.of(page, size));
 
         return users.stream()
-                .map(UserMapper::toUserDTO)
+                .map(UserMapper::toUserResponse)
                 .toList();
     }
 

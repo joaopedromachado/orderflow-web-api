@@ -1,5 +1,6 @@
 package br.com.orderflow.domain.order;
 
+import br.com.orderflow.domain.product.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +23,6 @@ public class OrderItem {
     @Column(name = "item_id")
     private UUID orderItemId;
 
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
@@ -36,11 +36,22 @@ public class OrderItem {
 
     private Integer quantity;
 
+    public OrderItem(Builder builder) {
+        this.orderItemId = builder.orderItemId;
+        this.order = builder.order;
+        this.product = builder.product;
+        this.unitPrice = builder.unitPrice;
+        this.quantity = builder.quantity;
+    }
+
+    public OrderItem() {
+    }
+
     public UUID getOrderItemId() {
         return orderItemId;
     }
 
-    public void setOrderItemId(final UUID orderItemId) {
+    public void setOrderItemId(UUID orderItemId) {
         this.orderItemId = orderItemId;
     }
 
@@ -48,7 +59,7 @@ public class OrderItem {
         return order;
     }
 
-    public void setOrder(final Order order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 
@@ -56,7 +67,7 @@ public class OrderItem {
         return product;
     }
 
-    public void setProduct(final Product product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
@@ -64,7 +75,7 @@ public class OrderItem {
         return unitPrice;
     }
 
-    public void setUnitPrice(final BigDecimal unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
@@ -72,7 +83,44 @@ public class OrderItem {
         return quantity;
     }
 
-    public void setQuantity(final Integer quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public static class Builder {
+        private UUID orderItemId;
+        private Order order;
+        private Product product;
+        private BigDecimal unitPrice;
+        private Integer quantity;
+
+        public Builder orderItemId(UUID orderItemId) {
+            this.orderItemId = orderItemId;
+            return this;
+        }
+
+        public Builder order(Order order) {
+            this.order = order;
+            return this;
+        }
+
+        public Builder product(Product product) {
+            this.product = product;
+            return this;
+        }
+
+        public Builder unitPrice(BigDecimal unitPrice) {
+            this.unitPrice = unitPrice;
+            return this;
+        }
+
+        public Builder quantity(Integer quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public OrderItem build() {
+            return new OrderItem(this);
+        }
     }
 }

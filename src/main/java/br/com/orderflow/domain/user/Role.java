@@ -26,7 +26,7 @@ public class Role {
                 '}';
     }
 
-    public void setRoleId(final Long id) {
+    public void setRoleId(Long id) {
         this.roleId = id;
     }
 
@@ -38,7 +38,7 @@ public class Role {
         return name;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -48,14 +48,13 @@ public class Role {
 
         private final long role;
 
-        Values(final long role) {
+        Values(long role) {
             this.role = role;
         }
 
         public long getRole() {
             return role;
         }
-
     }
 
 }

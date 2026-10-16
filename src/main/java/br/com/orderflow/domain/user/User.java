@@ -76,7 +76,7 @@ public class User {
         if (createdAt == null) createdAt = Instant.now();
     }
 
-    public User(final Builder builder) {
+    public User(Builder builder) {
         this.userId = builder.userId;
         this.username = builder.username;
         this.email = builder.email;
@@ -94,7 +94,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(final UUID userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
@@ -102,7 +102,7 @@ public class User {
         return username;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -110,7 +110,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(final String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -118,7 +118,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -126,7 +126,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(final Set<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -134,7 +134,7 @@ public class User {
         return orders;
     }
 
-    public void setOrders(final List<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
@@ -142,7 +142,7 @@ public class User {
         return addresses;
     }
 
-    public void setAddresses(final List<Address> addresses) {
+    public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
 
@@ -150,7 +150,7 @@ public class User {
         return createdAt;
     }
 
-    public void setCreatedAt(final Instant createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -162,12 +162,13 @@ public class User {
         this.updatedAt = Instant.now();
     }
 
-    public boolean isValidLogin(final LoginUserRequest request, final PasswordEncoder passwordEncoder) {
+    public boolean isValidLogin(LoginUserRequest request, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(request.password(), this.password);
     }
 
     public static class Builder {
         private UUID userId;
+
         private String username;
         private String email;
         private String password;
@@ -177,47 +178,47 @@ public class User {
         private Instant createdAt;
         private Instant updatedAt;
 
-        public Builder userId(final UUID userId) {
+        public Builder userId(UUID userId) {
             this.userId = userId;
             return this;
         }
 
-        public Builder username(final String username) {
+        public Builder username(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder email(final String email) {
+        public Builder email(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder password(final String password) {
+        public Builder password(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder roles(final Set<Role> roles) {
+        public Builder roles(Set<Role> roles) {
             this.roles = roles;
             return this;
         }
 
-        public Builder orders(final List<Order> orders) {
+        public Builder orders(List<Order> orders) {
             this.orders = orders;
             return this;
         }
 
-        public Builder addresses(final List<Address> addresses) {
+        public Builder addresses(List<Address> addresses) {
             this.addresses = addresses;
             return this;
         }
 
-        public Builder createdAt(final Instant createdAt) {
+        public Builder createdAt(Instant createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder updatedAt(final Instant updatedAt) {
+        public Builder updatedAt(Instant updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
