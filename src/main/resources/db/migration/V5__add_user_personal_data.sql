@@ -1,0 +1,4 @@
+ALTER TABLE tb_users
+    ADD COLUMN name VARCHAR(255),
+    ADD COLUMN birth_date DATE,
+    ADD COLUMN cpf VARCHAR(11) UNIQUE;

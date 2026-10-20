@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -25,6 +26,9 @@ public final class UserStub {
             .password("xpto@123")
             .build();
     public static final RegisterUserRequest REGISTER_USER_REQUEST = new RegisterUserRequest(
+            "dfdf",
+            LocalDate.now(),
+            "05045133039",
             "xpto",
             "xpto@gmail.com",
             "senhaCodificada"

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de pedido</title>
+    <style>
+        @page {
+            margin: 20mm;
+            size: A4;
+        }
+
+        body {
+            color: #1f2937;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        h1, h2, p {
+            margin: 0;
+        }
+
+        .header {
+            border-bottom: 2px solid #1d4ed8;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+        }
+
+        .header h1 {
+            color: #1d4ed8;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #4b5563;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .details {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .detail-label {
+            color: #6b7280;
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .items {
+            border-collapse: collapse;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .items th, .items td {
+            border-bottom: 1px solid #d1d5db;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .items th {
+            background: #eff6ff;
+            color: #1e3a8a;
+        }
+
+        .items .number {
+            text-align: right;
+        }
+
+        .total {
+            font-size: 15px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1>Relatório de pedido</h1>
+    <p th:text="${report.generatedAt}">Gerado em 01/01/2026 às 00:00</p>
+</header>
+
+<section class="section">
+    <h2>Dados do pedido</h2>
+    <div class="details">
+        <div>
+            <span class="detail-label">Pedido</span>
+            <span th:text="${report.orderNumber}">#000000</span>
+        </div>
+        <div>
+            <span class="detail-label">Status</span>
+            <span th:text="${report.status}">Recebido</span>
+        </div>
+        <div>
+            <span class="detail-label">Criado em</span>
+            <span th:text="${report.createdAt}">01/01/2026 às 00:00</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Cliente</h2>
+    <div class="details">
+        <div>
+            <span class="detail-label">Nome</span>
+            <span th:text="${report.customerName}">Nome do cliente</span>
+        </div>
+        <div>
+            <span class="detail-label">E-mail</span>
+            <span th:text="${report.customerEmail}">cliente@exemplo.com</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Itens</h2>
+    <table class="items">
+        <thead>
+        <tr>
+            <th>Produto</th>
+            <th class="number">Quantidade</th>
+            <th class="number">Preço unitário</th>
+            <th class="number">Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${report.items}">
+            <td th:text="${item.productName}">Produto</td>
+            <td class="number" th:text="${item.quantity}">1</td>
+            <td class="number" th:text="${item.unitPrice}">R$ 0,00</td>
+            <td class="number" th:text="${item.subtotal}">R$ 0,00</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td class="total" colspan="3">Total do pedido</td>
+            <td class="total" th:text="${report.totalAmount}">R$ 0,00</td>
+        </tr>
+        </tfoot>
+    </table>
+</section>
+</body>
+</html>

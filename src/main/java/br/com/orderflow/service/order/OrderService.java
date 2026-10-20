@@ -62,7 +62,7 @@ public class OrderService {
     }
 
     public List<Order> getAllByOrderStatus(final OrderStatus status) {
-        return this.orderRepository.findAllByOrderStatus(status)
+        return this.orderRepository.findAllForReportByStatus(status)
                 .orElseThrow(RuntimeException::new);
     }
 }

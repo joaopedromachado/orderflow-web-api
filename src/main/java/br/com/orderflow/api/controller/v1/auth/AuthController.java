@@ -76,6 +76,9 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.register(
                         new RegisterUserRequest(
+                                registerUserRequest.name(),
+                                registerUserRequest.birthDate(),
+                                registerUserRequest.cpf(),
                                 registerUserRequest.username(),
                                 registerUserRequest.email(),
                                 passwordEncoder.encode(registerUserRequest.password())

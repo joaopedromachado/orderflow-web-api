@@ -20,6 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -38,6 +39,14 @@ public class User {
 
     @Column(unique = true)
     private String email;
+
+    private String name;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(unique = true)
+    private String cpf;
 
     private String password;
 
@@ -80,6 +89,9 @@ public class User {
         this.userId = builder.userId;
         this.username = builder.username;
         this.email = builder.email;
+        this.name = builder.name;
+        this.birthDate = builder.birthDate;
+        this.cpf = builder.cpf;
         this.password = builder.password;
         this.roles = builder.roles;
         this.orders = builder.orders;
@@ -112,6 +124,30 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getPassword() {
@@ -171,6 +207,9 @@ public class User {
 
         private String username;
         private String email;
+        private String name;
+        private LocalDate birthDate;
+        private String cpf;
         private String password;
         private Set<Role> roles;
         private List<Order> orders;
@@ -190,6 +229,21 @@ public class User {
 
         public Builder email(String email) {
             this.email = email;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder birthDate(LocalDate birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Builder cpf(String cpf) {
+            this.cpf = cpf;
             return this;
         }
 

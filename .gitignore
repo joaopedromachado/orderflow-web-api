@@ -34,3 +34,6 @@ build/
 
 ### RSA Keys ###
 /src/main/resources/rsa/
+
+### Generated reports ###
+/reports/generated/

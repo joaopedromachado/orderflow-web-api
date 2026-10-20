@@ -24,7 +24,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
+    @PostMapping("/me")
     public ResponseEntity<OrderResponse> createOrder(
             @RequestBody @Valid final OrderRequest orderRequest,
             final JwtAuthenticationToken token
