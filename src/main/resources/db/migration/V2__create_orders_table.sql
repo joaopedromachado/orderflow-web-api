@@ -2,6 +2,7 @@
 CREATE TABLE tb_products (
      product_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
      name VARCHAR(50) NOT NULL,
+     description VARCHAR(255),
      price NUMERIC(15,2) NOT NULL CHECK ( price >= 0 ),
      stock INTEGER NOT NULL CHECK ( stock >= 0 ),
      active BOOLEAN NOT NULL

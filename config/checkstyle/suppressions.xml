@@ -5,5 +5,5 @@
 
 <suppressions>
     <!-- Entidades JPA, setters e builders em domain não precisam de parâmetros final. -->
-    <suppress checks="FinalParameters" files="[/\\]domain[/\\].*\\.java$"/>
+    <suppress checks="FinalParameters" files="[/\\]domain[/\\].*\.java$"/>
 </suppressions>

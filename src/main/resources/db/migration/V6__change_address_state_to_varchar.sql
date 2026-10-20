@@ -1,2 +1,0 @@
-ALTER TABLE tb_address
-    ALTER COLUMN state TYPE VARCHAR(2);

@@ -67,7 +67,7 @@ public class Address {
                 '}';
     }
 
-    public Address(final Builder builder) {
+    public Address(Builder builder) {
         this.addressId = builder.addressId;
         this.user = builder.user;
         this.postalCode = builder.postalCode;
@@ -88,7 +88,7 @@ public class Address {
         return addressId;
     }
 
-    public void setAddressId(final UUID addressId) {
+    public void setAddressId(UUID addressId) {
         this.addressId = addressId;
     }
 
@@ -96,7 +96,7 @@ public class Address {
         return user;
     }
 
-    public void setUser(final User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -104,7 +104,7 @@ public class Address {
         return postalCode;
     }
 
-    public void setPostalCode(final String postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -112,7 +112,7 @@ public class Address {
         return street;
     }
 
-    public void setStreet(final String street) {
+    public void setStreet(String street) {
         this.street = street;
     }
 
@@ -120,7 +120,7 @@ public class Address {
         return complement;
     }
 
-    public void setComplement(final String complement) {
+    public void setComplement(String complement) {
         this.complement = complement;
     }
 
@@ -128,7 +128,7 @@ public class Address {
         return neighborhood;
     }
 
-    public void setNeighborhood(final String neighborhood) {
+    public void setNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
     }
 
@@ -136,7 +136,7 @@ public class Address {
         return city;
     }
 
-    public void setCity(final String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -144,7 +144,7 @@ public class Address {
         return state;
     }
 
-    public void setState(final String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -152,7 +152,7 @@ public class Address {
         return region;
     }
 
-    public void setRegion(final String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
@@ -160,7 +160,7 @@ public class Address {
         return number;
     }
 
-    public void setNumber(final String number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -168,7 +168,7 @@ public class Address {
         return defaultAddress;
     }
 
-    public void setDefaultAddress(final boolean defaultAddress) {
+    public void setDefaultAddress(boolean defaultAddress) {
         this.defaultAddress = defaultAddress;
     }
 
@@ -185,57 +185,57 @@ public class Address {
         private String number;
         private boolean defaultAddress;
 
-        public Builder addressId(final UUID addressId) {
+        public Builder addressId(UUID addressId) {
             this.addressId = addressId;
             return this;
         }
 
-        public Builder user(final User user) {
+        public Builder user(User user) {
             this.user = user;
             return this;
         }
 
-        public Builder postalCode(final String postalCode) {
+        public Builder postalCode(String postalCode) {
             this.postalCode = postalCode;
             return this;
         }
 
-        public Builder street(final String street) {
+        public Builder street(String street) {
             this.street = street;
             return this;
         }
 
-        public Builder complement(final String complement) {
+        public Builder complement(String complement) {
             this.complement = complement;
             return this;
         }
 
-        public Builder neighborhood(final String neighborhood) {
+        public Builder neighborhood(String neighborhood) {
             this.neighborhood = neighborhood;
             return this;
         }
 
-        public Builder city(final String city) {
+        public Builder city(String city) {
             this.city = city;
             return this;
         }
 
-        public Builder state(final String state) {
+        public Builder state(String state) {
             this.state = state;
             return this;
         }
 
-        public Builder region(final String region) {
+        public Builder region(String region) {
             this.region = region;
             return this;
         }
 
-        public Builder number(final String number) {
+        public Builder number(String number) {
             this.number = number;
             return this;
         }
 
-        public Builder defaultAddress(final boolean defaultAddress) {
+        public Builder defaultAddress(boolean defaultAddress) {
             this.defaultAddress = defaultAddress;
             return this;
         }
